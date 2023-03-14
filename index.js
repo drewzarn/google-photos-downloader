@@ -1,5 +1,8 @@
-const { authorize } = require("./lib/authorize");
-const credentials = require("./secrets/credentials");
+const { OAuth2Client } = require("google-auth-library");
+const { authenticate } = require("./lib/authenticate");
 const { downloadMedia } = require("./lib/download-media");
 
-authorize(credentials, downloadMedia);
+authenticate().then(oAuth2Client => {
+    console.log("OAuth2Client:", oAuth2Client);
+    downloadMedia(oAuth2Client);
+});
