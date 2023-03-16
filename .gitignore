@@ -74,3 +74,5 @@ sync-stop.txt
 # Personal artifacts
 .screenrc
 secrets/oauth.json
+photos.sqlite3
+photos.sqlite3-journal
