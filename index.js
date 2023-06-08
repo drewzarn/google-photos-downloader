@@ -1,6 +1,7 @@
 const { OAuth2Client } = require("google-auth-library");
 const { authenticate } = require("./lib/authenticate");
 const photos = require("./lib/photos");
+const download = require("./lib/download");
 const db = require("./lib/db");
 
 const action = process.argv[2]?.toLowerCase() ?? "synclibrary";
@@ -18,6 +19,7 @@ switch (action) {
         });
         break;
     case "download":
+        download.downloadMediaItems();
         break;
     case "resetsyncpage":
         db.resetPageToken();
