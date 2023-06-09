@@ -4,7 +4,27 @@ const photos = require("./lib/photos");
 const download = require("./lib/download");
 const db = require("./lib/db");
 
-const action = process.argv[2]?.toLowerCase() ?? "synclibrary";
+const action = process.argv[2]?.toLowerCase() ?? "download";
+
+reAuth = () => {
+    db.getCredentials().then(credentials => {
+        authenticate(credentials).then(async oAuth2Client => {
+            oAuth2Client.refreshAccessToken((error, tokens) => {
+                if (error) {
+                    console.error(error);
+                } else {
+                    console.log("Access token updated");
+                    db.addCredentials(tokens);
+                }
+            });
+        });
+    });
+};
+
+setInterval(() => {
+    reAuth();
+}, 60 * 15 * 1000);
+reAuth();
 
 switch (action) {
     case "synclibrary":
@@ -26,6 +46,9 @@ switch (action) {
         break;
     case "cleanup":
         db.cleanup();
+        break;
+    case "resetdownloads":
+        db.clearAllDownloads();
         break;
     case "resetauth":
         db.resetAuth();
